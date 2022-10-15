@@ -51,6 +51,7 @@ public class Topic_11_Custom_Checkbox_RadioButton {
 
 	}
 
+	@Test
 	public void TC_01_Angular() {
 		// Navigate to Radio button Page URL
 		driver.get("https://material.angular.io/components/radio/examples");
