@@ -1,4 +1,5 @@
 package webdriver;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -29,7 +30,7 @@ public class Topic_09_Button {
 	String osName = System.getProperty("os.name");
 	WebDriverWait explicitWait;
 	JavascriptExecutor jsExecutor;
-	
+
 	@BeforeClass
 	public void beforeClass() {
 		if (osName.contains("Mac OS")) {
@@ -37,62 +38,61 @@ public class Topic_09_Button {
 		} else {
 			System.setProperty("webdriver.chrome.driver", projectPath + "\\browserDrivers\\chromedriver.exe");
 		}
-		
+
 		driver = new ChromeDriver();
-		
+
 		jsExecutor = (JavascriptExecutor) driver;
-		
+
 		driver.manage().window().setSize(new Dimension(1366, 768));
-		
+
 		explicitWait = new WebDriverWait(driver, 30);
-		
+
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-		
-		
+
 	}
-	
 
 	@Test
 	public void TC_01_Fahasa() {
-		//Navigate to URL
+		// Navigate to URL
 		driver.get("https://www.fahasa.com/customer/account/create");
 		waitInSecond(3);
-		
-		//Switch to iFrame
-		driver.switchTo().frame("moe-onsite-campaign-6343d7a04a393aeaf7259ff2");
-		
-		//Click to close the popup
-		driver.findElement(By.cssSelector("img#NC_IMAGE1")).click();
-		
+
+		// Switch to iFrame
+		WebElement iframe = driver.findElement(By.xpath("//iframe[contains(@id,'moe-onsite-campaign')]"));
+		driver.switchTo().frame(iframe);
+
+		// Click to close the popup
+		driver.findElement(By.cssSelector("button#close-icon")).click();
+
 		waitInSecond(3);
 		driver.switchTo().defaultContent();
-		//Click Đăng nhập link
+		// Click Đăng nhập link
 		driver.findElement(By.xpath("//a[contains(text(),'Đăng nhập')]")).click();
-		
+
 		waitInSecond(3);
-		//Verify the 'Đăng nhập' button is disabled
+		// Verify the 'Đăng nhập' button is disabled
 		Assert.assertFalse(driver.findElement(By.cssSelector("button.fhs-btn-login")).isEnabled());
-		
+
 		waitInSecond(3);
-		//Input valid values to Email/Password fields
+		// Input valid values to Email/Password fields
 		driver.findElement(By.cssSelector("input#login_username")).sendKeys("test@yopmail.com");
 		driver.findElement(By.cssSelector("input#login_password")).sendKeys("Test@123");
-		
-		//Get button color
+
+		// Get button color
 		String rgbaColor = driver.findElement(By.cssSelector("button.fhs-btn-login")).getCssValue("background-color");
-		//Convert to hexa color
+		// Convert to hexa color
 		String hexColor = Color.fromString(rgbaColor).asHex().toUpperCase();
-		
-		//Verify background color
+
+		// Verify background color
 		Assert.assertEquals(hexColor, "#C92127");
 		waitInSecond(3);
 	}
-	
+
 	@AfterClass
 	public void afterClass() {
 		driver.quit();
 	}
-	
+
 	public void waitInSecond(int second) {
 		try {
 			Thread.sleep(second * 1000);
@@ -100,7 +100,7 @@ public class Topic_09_Button {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 }
