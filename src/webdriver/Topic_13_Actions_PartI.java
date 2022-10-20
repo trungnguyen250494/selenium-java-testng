@@ -190,6 +190,20 @@ public class Topic_13_Actions_PartI {
 		waitInSecond(3);
 	}
 	
+	@Test
+	public void TC_06_Double_Click() {
+		// Navigate to the Page URL
+		driver.get("https://automationfc.github.io/basic-form/index.html");
+
+		waitInSecond(3);
+		scrollToElement("//button[normalize-space()='Double click me']");
+		action = new Actions(driver);
+		action.doubleClick(driver.findElement(By.xpath("//button[normalize-space()='Double click me']"))).perform();
+		waitInSecond(3);
+		
+		Assert.assertEquals(driver.findElement(By.xpath("//p[@id='demo']")).getText(), "Hello Automation Guys!");
+	}
+	
 	@AfterClass
 	public void afterClass() {
 		driver.quit();
