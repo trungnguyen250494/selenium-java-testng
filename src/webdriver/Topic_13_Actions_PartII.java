@@ -61,7 +61,7 @@ public class Topic_13_Actions_PartII {
 
 	}
 
-	//@Test
+	@Test
 	public void TC_07_Right_Click() {
 		// Navigate to the Page URL
 		driver.get("http://swisnl.github.io/jQuery-contextMenu/demo.html");
@@ -78,7 +78,7 @@ public class Topic_13_Actions_PartII {
 						.isDisplayed());
 	}
 
-	//@Test
+	@Test
 	public void TC_08_Drag_And_Drop_HTML4() {
 		// Navigate to the Page URL
 		driver.get("https://automationfc.github.io/kendo-drag-drop/");
