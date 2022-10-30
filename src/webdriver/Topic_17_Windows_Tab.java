@@ -1,32 +1,16 @@
 package webdriver;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.Color;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -62,108 +46,180 @@ public class Topic_17_Windows_Tab {
 	}
 
 	@Test
-	public void TC_01_Window() {
+	public void TC_01_Live_Tech_Panda() {
+		navigateToUrlByJS("http://live.techpanda.org/");
+		waitInSecond(3);
+		Assert.assertEquals(executeForBrowser("return document.domain;"), "live.techpanda.org");
+		Assert.assertEquals(executeForBrowser("return document.URL;"), "http://live.techpanda.org/");
 
-		// Navigate to the Page URL
-		driver.get("https://automationfc.github.io/basic-form/index.html");
-
+		highlightElement("//a[normalize-space()='Mobile']");
+		waitInSecond(3);
+		clickToElementByJS("//a[normalize-space()='Mobile']");
 		waitInSecond(3);
 
-		// Get ID of current tab
-		String parentPageWindowID = driver.getWindowHandle();
-
-		// Click on Google link
-		driver.findElement(By.xpath("//a[normalize-space()='GOOGLE']")).click();
+		highlightElement("//a[normalize-space()='Samsung Galaxy']/parent::h2/following-sibling::div[@class='actions']/button");
+		clickToElementByJS(
+				"//a[normalize-space()='Samsung Galaxy']/parent::h2/following-sibling::div[@class='actions']/button");
 		waitInSecond(3);
 
-		switchToWindowByID(parentPageWindowID);
+		Assert.assertTrue(areExpectedTextInInnerText("Samsung Galaxy was added to your shopping cart."));
 
-		String googleTabID = driver.getWindowHandle();
+		clickToElementByJS("//a[normalize-space()='Customer Service']");
+		waitInSecond(3);
+		Assert.assertEquals(executeForBrowser("return document.title;"), "Customer Service");
 
-		// Check title of new window
-		Assert.assertEquals(driver.getTitle(), "Google");
+		scrollToElementOnDown("//input[@id='newsletter']");
+		highlightElement("//input[@id='newsletter']");
 
-		// Switch to parentWindow
-		driver.switchTo().window(parentPageWindowID);
-		// Click on Facebook link
-		driver.findElement(By.xpath("//a[normalize-space()='FACEBOOK']")).click();
+		Random rd = new Random();
+		int rdNumber = rd.nextInt(1000);
+		System.out.println(rdNumber);
+		sendkeyToElementByJS("//input[@id='newsletter']", "test" + rdNumber + "@yopmail.com");
+		highlightElement("//button[@title='Subscribe']/span");
+		waitInSecond(3);
+		clickToElementByJS("//button[@title='Subscribe']/span");
 		waitInSecond(3);
 
-		switchToWindowByPageTitle("Facebook");
-		// Check title of new window
-		Assert.assertEquals(driver.getTitle(), "Facebook – log in or sign up");
+		Assert.assertTrue(areExpectedTextInInnerText("Thank you for your subscription."));
 
-		// Switch to parentWindow
-		driver.switchTo().window(parentPageWindowID);
-		// Click on Tiki link
-		driver.findElement(By.xpath("//a[normalize-space()='TIKI']")).click();
+		navigateToUrlByJS("http://demo.guru99.com/v4/");
 		waitInSecond(3);
+		Assert.assertEquals(executeForBrowser("return document.domain;"), "demo.guru99.com");
 
-		switchToWindowByPageTitle("Tiki - Mua hàng online giá tốt, hàng chuẩn, ship nhanh");
-		// Check title of new window
-		Assert.assertEquals(driver.getTitle(), "Tiki - Mua hàng online giá tốt, hàng chuẩn, ship nhanh");
-
-		// Switch to parentWindow
-		driver.switchTo().window(parentPageWindowID);
-		waitInSecond(3);
-		// Close all tabs except parentID
-		closeAllWindowsWithoutParent(parentPageWindowID);
-
-		// Verify current title/url
-		Assert.assertEquals(driver.getTitle(), "SELENIUM WEBDRIVER FORM DEMO");
-		Assert.assertEquals(driver.getCurrentUrl(), "https://automationfc.github.io/basic-form/index.html");
 	}
 
 	@Test
-	public void TC_02_Window() {
-		// Navigate to the Page URL
-		driver.get("http://live.techpanda.org/");
-
-		waitInSecond(3);
-		String parentWindowID = driver.getWindowHandle();
-
-		// Click the Mobile tab
-		driver.findElement(By.xpath("//a[normalize-space()='Mobile']")).click();
+	public void TC_02_HTML5_Validation_message() {
+		navigateToUrlByJS("https://automationfc.github.io/html5/index.html");
 		waitInSecond(3);
 
-		// Add Sony product to compare
-		driver.findElement(By.xpath(
-				"//a[normalize-space()='Sony Xperia']/parent::h2/following-sibling::div[@class='actions']//a[@class='link-compare']"))
-				.click();
-		Assert.assertEquals(driver.findElement(By.xpath("//li[@class='success-msg']//span")).getText(),
-				"The product Sony Xperia has been added to comparison list.");
+		clickToElementByJS("//input[@name='submit-btn']");
+		waitInSecond(3);
+		Assert.assertEquals(getElementValidationMessage("//input[@id='fname']"), "Please fill out this field.");
 
-		// Add Samsung product to compare
-		driver.findElement(By.xpath(
-				"//a[normalize-space()='Samsung Galaxy']/parent::h2/following-sibling::div[@class='actions']//a[@class='link-compare']"))
-				.click();
-		Assert.assertEquals(driver.findElement(By.xpath("//li[@class='success-msg']//span")).getText(),
-				"The product Samsung Galaxy has been added to comparison list.");
+		sendkeyToElementByJS("//input[@id='fname']", "Trung");
+		clickToElementByJS("//input[@name='submit-btn']");
 		waitInSecond(3);
-		
-		//Click Compare button
-		driver.findElement(By.xpath("//button[@title='Compare']")).click();
-		waitInSecond(3);
-		
-		//switch to another tab and verify title
-		switchToWindowByPageTitle("Products Comparison List - Magento Commerce");
-		Assert.assertEquals(driver.getTitle(), "Products Comparison List - Magento Commerce");
-		
-		//Close all tabs expect parent window
-		closeAllWindowsWithoutParent(parentWindowID);
-		
-		//Click Clear All link
-		driver.findElement(By.xpath("//a[normalize-space()='Clear All']")).click();
-		waitInSecond(3);
-		
-		//Accept alert
-		Alert alert = driver.switchTo().alert();
-		alert.accept();
-		waitInSecond(3);
-		
-		Assert.assertEquals(driver.findElement(By.xpath("//li[@class='success-msg']//span")).getText(),
-				"The comparison list was cleared.");
+		Assert.assertEquals(getElementValidationMessage("//input[@id='pass']"), "Please fill out this field.");
 
+		sendkeyToElementByJS("//input[@id='pass']", "123456");
+		clickToElementByJS("//input[@name='submit-btn']");
+		waitInSecond(3);
+		Assert.assertEquals(getElementValidationMessage("//input[@id='em']"), "Please fill out this field.");
+
+		sendkeyToElementByJS("//input[@id='em']", "123!@!$@#%$");
+		clickToElementByJS("//input[@name='submit-btn']");
+		waitInSecond(3);
+		Assert.assertEquals(getElementValidationMessage("//input[@id='em']"),
+				"A part following '@' should not contain the symbol '!'.");
+
+		sendkeyToElementByJS("//input[@id='em']", "123@456");
+		clickToElementByJS("//input[@name='submit-btn']");
+		waitInSecond(3);
+		Assert.assertEquals(getElementValidationMessage("//input[@id='em']"), "Please match the requested format.");
+
+		sendkeyToElementByJS("//input[@id='em']", "123@yopmail.com");
+		clickToElementByJS("//input[@name='submit-btn']");
+		waitInSecond(3);
+		Assert.assertEquals(
+				getElementValidationMessage(
+						"//b[contains(text(),'✱ ADDRESS')]//parent::label/following-sibling::select"),
+				"Please select an item in the list.");
+
+	}
+	
+	@Test
+	public void TC_04_Remove_attribute() {
+		navigateToUrlByJS("http://demo.guru99.com/v4");
+		waitInSecond(3);
+		
+		highlightElement("//input[@name='uid']");
+		waitInSecond(3);
+		sendkeyToElementByJS("//input[@name='uid']", "mngr451176");
+		
+		highlightElement("//input[@name='password']");
+		waitInSecond(3);
+		sendkeyToElementByJS("//input[@name='password']", "upEgUgU");
+		
+		highlightElement("//input[@name='btnLogin']");
+		waitInSecond(3);
+		clickToElementByJS("//input[@name='btnLogin']");
+		waitInSecond(3);
+		
+		highlightElement("//a[normalize-space()='New Customer']");
+		waitInSecond(3);
+		clickToElementByJS("//a[normalize-space()='New Customer']");
+		waitInSecond(3);
+		
+		removeAttributeInDOM("//input[@id='dob']", "type");
+		waitInSecond(3);
+		
+	}
+
+	public Object executeForBrowser(String javaScript) {
+		return jsExecutor.executeScript(javaScript);
+	}
+
+	public String getInnerText() {
+		return (String) jsExecutor.executeScript("return document.documentElement.innerText;");
+	}
+
+	public boolean areExpectedTextInInnerText(String textExpected) {
+		String textActual = (String) jsExecutor
+				.executeScript("return document.documentElement.innerText.match('" + textExpected + "')[0];");
+		return textActual.equals(textExpected);
+	}
+
+	public void scrollToBottomPage() {
+		jsExecutor.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+	}
+
+	public void navigateToUrlByJS(String url) {
+		jsExecutor.executeScript("window.location = '" + url + "'");
+	}
+
+	public void highlightElement(String locator) {
+		WebElement element = getElement(locator);
+		String originalStyle = element.getAttribute("style");
+		jsExecutor.executeScript("arguments[0].setAttribute('style', arguments[1])", element,
+				"border: 2px solid red; border-style: dashed;");
+		waitInSecond(1);
+		jsExecutor.executeScript("arguments[0].setAttribute('style', arguments[1])", element, originalStyle);
+	}
+
+	public void clickToElementByJS(String locator) {
+		jsExecutor.executeScript("arguments[0].click();", getElement(locator));
+	}
+
+	public void scrollToElementOnTop(String locator) {
+		jsExecutor.executeScript("arguments[0].scrollIntoView(true);", getElement(locator));
+	}
+
+	public void scrollToElementOnDown(String locator) {
+		jsExecutor.executeScript("arguments[0].scrollIntoView(false);", getElement(locator));
+	}
+
+	public void sendkeyToElementByJS(String locator, String value) {
+		jsExecutor.executeScript("arguments[0].setAttribute('value', '" + value + "')", getElement(locator));
+	}
+
+	public void removeAttributeInDOM(String locator, String attributeRemove) {
+		jsExecutor.executeScript("arguments[0].removeAttribute('" + attributeRemove + "');", getElement(locator));
+	}
+
+	public String getElementValidationMessage(String locator) {
+		return (String) jsExecutor.executeScript("return arguments[0].validationMessage;", getElement(locator));
+	}
+
+	public boolean isImageLoaded(String locator) {
+		boolean status = (boolean) jsExecutor.executeScript(
+				"return arguments[0].complete && typeof arguments[0].naturalWidth != 'undefined' && arguments[0].naturalWidth > 0",
+				getElement(locator));
+		return status;
+	}
+
+	public WebElement getElement(String locator) {
+		return driver.findElement(By.xpath(locator));
 	}
 
 	@AfterClass
