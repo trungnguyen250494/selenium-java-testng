@@ -58,7 +58,7 @@ public class Topic_23_ExplicitWait_Part2 {
 
 	}
 
-	//@Test
+	@Test
 	public void TC_01_Telerik() {
 		driver.get(
 				"https://demos.telerik.com/aspnet-ajax/ajaxloadingpanel/functionality/explicit-show-hide/defaultcs.aspx");
