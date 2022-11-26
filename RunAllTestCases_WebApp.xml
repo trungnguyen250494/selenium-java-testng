@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite parallel="tests" name="Suite">
-	<test name="Test_Tiki">
+	<test name="Run with package name">
 
-		<!--<groups>
+		<groups>
 			<run>
 				<include name="cart"></include>
 			</run>
 		</groups>
 		<packages>
 			<package name="Tiki.admin"></package>
-		</packages> -->
+		</packages> 
 		<classes>
 			<!-- <class name="Tiki.admin.Shopper_01_Manage_Product" />
 			<class name="Tiki.admin.Shopper_02_Manage_Cart" />
@@ -19,7 +19,7 @@
 		</classes>
 	</test> <!-- Test_Tiki -->
 	
-	<parameter name="environment" value="dev"/>
+	<!--<parameter name="environment" value="dev"/>
 
 	<test name="Run on Firefox">
 	    <parameter name="browser" value="firefox"></parameter>
@@ -40,5 +40,5 @@
 		<classes>
 			<class name="testng.Topic_07_Loop" />
 		</classes>
-	</test>
+	</test> -->
 </suite> <!-- Suite -->
